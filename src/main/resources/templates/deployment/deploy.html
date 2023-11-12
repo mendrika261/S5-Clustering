@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Clustering</title>
+</head>
+<body>
+
+<h1>Deploy</h1>
+
+<h2>Server ready for deployment</h2>
+<form>
+    <table border="1">
+        <tr>
+            <th>Server name</th>
+            <th>Ip</th>
+            <th>Application server</th>
+            <th>Transfert method</th>
+            <th>Check</th>
+        </tr>
+        <tr>
+            <td colspan="5">No server ready for deployment</td>
+        </tr>
+        <tr>
+            <td>Server 1</td>
+            <td>192.109.19.23</td>
+            <td>
+                <select name="applicationServer">
+                    <option value="tomcat">Tomcat - 8080</option>
+                    <option value="jboss">Jboss</option>
+                    <option value="weblogic">Weblogic</option>
+                </select>
+            </td>
+            <td>
+                <select name="transfertMethod">
+                    <option value="tomcat">SSH</option>
+                </select>
+            </td>
+            <td><input type="checkbox" name="server[]" value="server1"></td>
+        </tr>
+    </table>
+
+    <input type="submit" value="Deploy">
+</form>
+
+</body>
+</html>

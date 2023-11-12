@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Clustering</title>
+</head>
+<body>
+
+<h1>Add a deployment</h1>
+<form>
+    <label for="gitUrl">Git url</label>
+    <input type="text" id="gitUrl"> <br>
+
+    <label for="configType">Config type</label>
+    <select id="configType">
+        <option>Aucun</option>
+        <option>.env</option>
+        <option>*.xml</option>
+        <option>*.properties</option>
+    </select>
+    <label for="configFile">Config file</label>
+    <select id="configFile">
+        <option></option>
+    </select> <br>
+    <textarea cols="30" rows="3"></textarea> <br>
+
+    <label for="buildType">Build system</label>
+    <select id="buildType">
+        <option>Bash script</option>
+        <option>maven</option>
+        <option>gradle</option>
+    </select>
+    <label for="buildFile">Path of ...</label>
+    <select id="buildFile">
+        <option></option>
+    </select> <br>
+
+    <label for="buildProduct">Artifact</label>
+    <select id="buildProduct">
+        <option>war</option>
+        <option>jar</option>
+    </select>
+    <label for="artifactPath">Artifact path</label>
+    <input type="text" id="artifactPath"> <br>
+
+    <input type="submit">
+</form>
+
+</body>
+</html>
