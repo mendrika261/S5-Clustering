@@ -8,6 +8,8 @@ import mg.clustering.repository.server.ServerRepository;
 import mg.clustering.repository.server.TransfertMethodRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ServerService {
 
@@ -25,13 +27,19 @@ public class ServerService {
 
     public void addServerApplication(long serverId, ServerApplication serverApplication) {
         Server server = serverRepository.findById(serverId).orElseThrow(() -> new RuntimeException("Server not found"));
-        serverApplication.setServer(server);
+        server.getServerApplications().add(serverApplication);
         serverApplicationRepository.saveAndFlush(serverApplication);
     }
 
     public void addTransfertMethod(long serverId, TransfertMethod transfertMethod) {
         Server server = serverRepository.findById(serverId).orElseThrow(() -> new RuntimeException("Server not found"));
-        transfertMethod.setServer(server);
+        server.getTransfertMethods().add(transfertMethod);
         transfertMethodRepository.saveAndFlush(transfertMethod);
+    }
+
+    public List<Server> getAllReadyServer() {
+        List<Server> serverList = serverRepository.findAll();
+        serverList.removeIf(server -> !server.isReachable(server.getIpv4()));
+        return serverList;
     }
 }

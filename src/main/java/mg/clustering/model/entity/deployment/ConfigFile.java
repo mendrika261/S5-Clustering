@@ -1,4 +1,4 @@
-package mg.clustering.model.entity.server;
+package mg.clustering.model.entity.deployment;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -7,8 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "operating_system")
-public class OperatingSystem {
+@Table(name = "config_file")
+public class ConfigFile {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -17,11 +17,10 @@ public class OperatingSystem {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "os_type")
+    @Column(name = "fileType", nullable = false)
     @Enumerated(EnumType.STRING)
-    private OperatingSystemType operatingSystemType;
+    private ConfigFileType fileType;
 
-    @Column(name = "script_extension", nullable = false)
-    private String scriptExtension;
-
+    @Column(name = "content", nullable = false)
+    private String content;
 }

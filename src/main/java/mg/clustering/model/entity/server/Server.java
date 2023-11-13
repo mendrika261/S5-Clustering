@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 import mg.clustering.model.core.Utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -25,6 +28,12 @@ public class Server {
     @Column(name = "ipv_4", unique = true)
     private String ipv4;
 
+    @OneToMany(mappedBy = "server", orphanRemoval = true)
+    private List<ServerApplication> serverApplications = new ArrayList<>();
+
+    @OneToMany(mappedBy = "server", orphanRemoval = true)
+    private List<TransfertMethod> transfertMethods = new ArrayList<>();
+
     @Override
     public String toString() {
         return this.getName() + " (" + this.getIpv4() + ")";
@@ -40,5 +49,9 @@ public class Server {
         if (!Utils.isValidIpV4(ipv4))
             throw new IllegalArgumentException("Invalid IPv4: " + ipv4 + " for " + this);
         this.ipv4 = ipv4;
+    }
+
+    public boolean isReachable(String ipv4) {
+        return Utils.ping(ipv4);
     }
 }
