@@ -38,7 +38,6 @@ public class ServerController {
         List<OperatingSystem> operatingSystemList = operatingSystemRepository.findAll(Sort.by("name"));
 
         model.addAttribute("operatingSystemList", operatingSystemList);
-        model.addAttribute("errorMessage", model.asMap().get("errorMessage"));
         return "server/add-server";
     }
 
@@ -47,7 +46,7 @@ public class ServerController {
         try {
             serverRepository.saveAndFlush(server);
         } catch (RuntimeException e) {
-            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            redirectAttributes.addAttribute("errorMessage", e.getMessage());
         }
         return "redirect:/servers";
     }
@@ -58,7 +57,6 @@ public class ServerController {
         List<ServerApplicationType> serverApplicationTypeList = serverApplicationTypeRepository.findAll(Sort.by("name", "version"));
 
         model.addAttribute("serverApplicationList", serverApplicationTypeList);
-        model.addAttribute("errorMessage", model.asMap().get("errorMessage"));
         return "server/add-server-app";
     }
 
@@ -69,7 +67,7 @@ public class ServerController {
         try {
             serverService.addServerApplication(serverId, serverApplication);
         } catch (RuntimeException e) {
-            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            redirectAttributes.addAttribute("errorMessage", e.getMessage());
         }
         return "redirect:/servers/" + serverId + "/server-apps/add";
     }
@@ -80,7 +78,6 @@ public class ServerController {
         TransfertMethodType[] transfertMethodTypes = TransfertMethodType.values();
 
         model.addAttribute("transfertMethods", transfertMethodTypes);
-        model.addAttribute("errorMessage", model.asMap().get("errorMessage"));
         return "server/add-transfert-method";
     }
 
@@ -91,7 +88,7 @@ public class ServerController {
         try {
             serverService.addTransfertMethod(serverId, transfertMethod);
         } catch (RuntimeException e) {
-            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            redirectAttributes.addAttribute("errorMessage", e.getMessage());
         }
         return "redirect:/servers/" + serverId + "/transfert-methods/add";
     }

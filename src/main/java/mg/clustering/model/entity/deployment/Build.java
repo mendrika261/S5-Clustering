@@ -14,6 +14,12 @@ public class Build {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "git_url", unique = true, nullable = false)
+    private String gitUrl;
+
+    /*@Column(name = "git_branch", nullable = false)
+    private String gitBranch; TODO */
+
     @Column(name = "build_type", nullable = false)
     @Enumerated(EnumType.STRING)
     private BuildType buildType;
@@ -27,4 +33,10 @@ public class Build {
 
     @Column(name = "artifact_file")
     private String artifactFile;
+
+
+    public String getRepository() {
+        // remove git extension and return the repository name
+        return gitUrl.substring(gitUrl.lastIndexOf('/') + 1, gitUrl.lastIndexOf('.'));
+    }
 }
