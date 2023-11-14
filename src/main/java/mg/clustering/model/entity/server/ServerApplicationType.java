@@ -24,6 +24,6 @@ public class ServerApplicationType {
 
     @Override
     public String toString() {
-        return this.getName() + " (" + this.getVersion() + ")";
+        return this.getName() + " - v" + this.getVersion();
     }
 }

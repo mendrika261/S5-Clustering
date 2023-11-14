@@ -27,12 +27,14 @@ public class ServerService {
 
     public void addServerApplication(long serverId, ServerApplication serverApplication) {
         Server server = serverRepository.findById(serverId).orElseThrow(() -> new RuntimeException("Server not found"));
+        serverApplication.setServer(server);
         server.getServerApplications().add(serverApplication);
         serverApplicationRepository.saveAndFlush(serverApplication);
     }
 
     public void addTransfertMethod(long serverId, TransfertMethod transfertMethod) {
         Server server = serverRepository.findById(serverId).orElseThrow(() -> new RuntimeException("Server not found"));
+        transfertMethod.setServer(server);
         server.getTransfertMethods().add(transfertMethod);
         transfertMethodRepository.saveAndFlush(transfertMethod);
     }

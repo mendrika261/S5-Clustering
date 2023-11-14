@@ -24,4 +24,8 @@ public class OperatingSystem {
     @Column(name = "script_extension", nullable = false)
     private String scriptExtension;
 
+    @Override
+    public String toString() {
+        return getOperatingSystemType() + " - " + getName();
+    }
 }

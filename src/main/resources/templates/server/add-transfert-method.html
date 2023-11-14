@@ -9,22 +9,26 @@
 </head>
 <body>
 
-<h1>Add a transfert method for ...</h1>
-<form>
-    <label for="transfertMethod">Type</label>
-    <select id="transfertMethod">
-        <option>SSH</option>
-        <option>FTP</option>
+<h1>Add a transfert method for: <span th:text="${server}"></span></h1>
+
+<p th:text="${errorMessage}"></p>
+
+<form method="post" th:object="${transfertMethod}">
+    <label for="transfertMethodType">Type</label>
+    <select id="transfertMethodType" th:field="*{transfertMethodType}">
+        <option th:each="tr: ${transfertMethodTypes}"
+                th:value="${tr}"
+                th:text="${tr}"></option>
     </select> <br>
 
     <label for="username">Username</label>
-    <input type="text" id="username"> <br>
+    <input type="text" id="username" th:field="*{username}"> <br>
 
     <label for="password">Password</label>
-    <input type="text" id="password"> <br>
+    <input type="text" id="password" th:field="*{password}"> <br>
 
     <label for="port">Port</label>
-    <input type="text" id="port"> <br>
+    <input type="text" id="port" th:field="*{port}"> <br>
 
     <input type="submit">
 </form>

@@ -8,7 +8,9 @@ import mg.clustering.model.core.Utils;
 @Getter
 @Setter
 @Entity
-@Table(name = "server_application")
+@Table(name = "server_application", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"server_id", "port"})
+})
 public class ServerApplication {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,5 +40,11 @@ public class ServerApplication {
         if (!Utils.isValidPort(port))
             throw new IllegalArgumentException("Invalid port: " + port + " for " + this);
         this.port = port;
+    }
+
+    public void setDeploymentPath(String deploymentPath) {
+        if(deploymentPath == null || deploymentPath.isEmpty())
+            throw new IllegalArgumentException("Invalid deployment path: " + deploymentPath + " for " + this);
+        this.deploymentPath = deploymentPath;
     }
 }

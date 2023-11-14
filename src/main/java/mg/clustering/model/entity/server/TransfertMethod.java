@@ -8,7 +8,9 @@ import mg.clustering.model.core.Utils;
 @Getter
 @Setter
 @Entity
-@Table(name = "transfert_method")
+@Table(name = "transfert_method", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"server_id", "type", "username", "password"})
+})
 public class TransfertMethod {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,7 +23,7 @@ public class TransfertMethod {
 
     @Column(name = "type", nullable = false)
     @Enumerated(EnumType.STRING)
-    private TransfertMethodType type;
+    private TransfertMethodType transfertMethodType;
 
     @Column(name = "username", nullable = false)
     private String username;
@@ -34,7 +36,7 @@ public class TransfertMethod {
 
     @Override
     public String toString() {
-        return this.getType().getName() + " (" + this.getUsername() + "@" + this.getServer().getIpv4() + ":" + this.getPort() + ")";
+        return this.getTransfertMethodType().getName() + " (" + this.getUsername() + "@" + this.getServer().getIpv4() + ":" + this.getPort() + ")";
     }
 
     public void setPort(String port) {

@@ -39,4 +39,5 @@ public class Build {
         // remove git extension and return the repository name
         return gitUrl.substring(gitUrl.lastIndexOf('/') + 1, gitUrl.lastIndexOf('.'));
     }
+
 }
