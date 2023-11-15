@@ -4,6 +4,7 @@ import lombok.SneakyThrows;
 import mg.clustering.model.core.Utils;
 import mg.clustering.model.entity.deployment.ConfigFile;
 import mg.clustering.model.entity.deployment.ConfigFileType;
+import mg.clustering.model.entity.deployment.HaProxyConfigFile;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -46,7 +47,8 @@ class S5ClusteringApplicationTests {
     @SneakyThrows
     @Test
     void contextLoads() {
-
+        HaProxyConfigFile ha = HaProxyConfigFile.parseHaProxyConfigFile(getFileContent(Paths.get("src/test/haproxy.cfg")));
+        System.out.println(ha);
     }
 
 }
