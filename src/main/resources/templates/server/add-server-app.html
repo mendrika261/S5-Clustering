@@ -8,20 +8,21 @@
     <title>Clustering</title>
 </head>
 <body>
+<h1>Add a Server Application for: <span th:text="${server}"></span></h1>
 
-<h1>Add an Application Server for ...</h1>
-<form>
-    <label for="appType">Application Server</label>
-    <select id="appType">
-        <option>Tomcat</option>
-        <option>Wildfly</option>
+<p th:text="${errorMessage}"></p>
+
+<form method="post" th:object="${serverApplication}">
+    <label for="serverApp">Application Server</label>
+    <select id="serverApp" th:field="*{serverApplicationType}">
+        <option th:each="serverApp: ${serverApplicationList}" th:value="${serverApp.getId()}" th:text="${serverApp}"></option>
     </select> <br>
 
     <label for="path">Deployment path</label>
-    <input type="text" id="path"> <br>
+    <input type="text" id="path" th:field="*{deploymentPath}"> <br>
 
     <label for="port">Port</label>
-    <input type="text" id="port"> <br>
+    <input type="text" id="port" th:field="*{port}"> <br>
 
     <input type="submit">
 </form>

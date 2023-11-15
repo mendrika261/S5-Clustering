@@ -10,12 +10,20 @@
 <body>
 
 <h1>Add a server</h1>
-<form>
+
+<p th:text="${errorMessage}"></p>
+
+<form method="post" th:object="${server}">
     <label for="name">Name</label>
-    <input type="text" id="name"> <br>
+    <input type="text" id="name" th:field="*{name}"> <br>
+
+    <label for="os">OS</label>
+    <select id="os" th:field="*{operatingSystem}">
+        <option th:each="os: ${operatingSystemList}" th:value="${os.getId()}" th:text="${os}"></option>
+    </select> <br>
 
     <label for="ip">IP</label>
-    <input type="text" id="ip"> <br>
+    <input type="text" id="ip" th:field="*{ipv4}"> <br>
 
     <input type="submit">
 </form>
