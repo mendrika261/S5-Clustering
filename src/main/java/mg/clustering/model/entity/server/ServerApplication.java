@@ -8,45 +8,48 @@ import mg.clustering.model.core.Utils;
 @Getter
 @Setter
 @Entity
-@Table(name = "server_application", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"server_id", "port"})
-})
+@Table(name = "server_application",
+       uniqueConstraints =
+       {
+         @UniqueConstraint(columnNames = {"server_id", "port"})
+       })
 public class ServerApplication {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "id", nullable = false)
+  private Long id;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "server_id", nullable = false)
-    private Server server;
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "server_id", nullable = false)
+  private Server server;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "server_application_type_id", nullable = false)
-    private ServerApplicationType serverApplicationType;
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "server_application_type_id", nullable = false)
+  private ServerApplicationType serverApplicationType;
 
-    @Column(name = "deployment_path", nullable = false)
-    private String deploymentPath;
+  @Column(name = "deployment_path", nullable = false)
+  private String deploymentPath;
 
-    @Column(name = "port", nullable = false)
-    private String port;
+  @Column(name = "port", nullable = false) private String port;
 
-    @Override
-    public String toString() {
-        return this.getServerApplicationType() + " on " + this.getServer();
-    }
+  @Override
+  public String toString() {
+    return this.getServerApplicationType() + " on " + this.getServer();
+  }
 
-    public void setPort(String port) {
-        if (!Utils.isValidPort(port))
-            throw new IllegalArgumentException("Invalid port: " + port + " for " + this);
-        this.port = port;
-    }
+  public void setPort(String port) {
+    if (!Utils.isValidPort(port))
+      throw new IllegalArgumentException("Invalid port: " + port + " for " +
+                                         this);
+    this.port = port;
+  }
 
-    public void setDeploymentPath(String deploymentPath) {
-        if(deploymentPath == null || deploymentPath.isEmpty())
-            throw new IllegalArgumentException("Invalid deployment path: " + deploymentPath + " for " + this);
-        if(!deploymentPath.endsWith("/"))
-            deploymentPath += "/";
-        this.deploymentPath = deploymentPath;
-    }
+  public void setDeploymentPath(String deploymentPath) {
+    if (deploymentPath == null || deploymentPath.isEmpty())
+      throw new IllegalArgumentException(
+          "Invalid deployment path: " + deploymentPath + " for " + this);
+    if (!deploymentPath.endsWith("/"))
+      deploymentPath += "/";
+    this.deploymentPath = deploymentPath;
+  }
 }

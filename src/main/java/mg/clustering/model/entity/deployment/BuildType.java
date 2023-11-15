@@ -4,14 +4,12 @@ import lombok.Getter;
 
 @Getter
 public enum BuildType {
-    MAVEN("maven"),
-    GRADLE("gradle"),
-    SCRIPT("script"),
-    COMMAND("command");
+  MAVEN("maven"),
+  GRADLE("gradle"),
+  SCRIPT("script"),
+  COMMAND("command");
 
-    final String name;
+  final String name;
 
-    BuildType(String name) {
-        this.name = name;
-    }
+  BuildType(String name) { this.name = name; }
 }

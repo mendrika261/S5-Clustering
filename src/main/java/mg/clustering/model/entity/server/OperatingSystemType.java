@@ -4,13 +4,11 @@ import lombok.Getter;
 
 @Getter
 public enum OperatingSystemType {
-    WINDOWS("Windows"),
-    LINUX("Linux"),
-    UNIX("Unix");
+  WINDOWS("Windows"),
+  LINUX("Linux"),
+  UNIX("Unix");
 
-    final String name;
+  final String name;
 
-    OperatingSystemType(String name) {
-        this.name = name;
-    }
+  OperatingSystemType(String name) { this.name = name; }
 }

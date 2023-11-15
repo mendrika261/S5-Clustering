@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class DeploymentRestController {
-    @PostMapping("/api/get_content")
-    public String getFileContent(@RequestParam String file) {
-        return Utils.getFileContent(file);
-    }
+  @PostMapping("/api/get_content")
+  public String getFileContent(@RequestParam String file) {
+    return Utils.getFileContent(file);
+  }
 }

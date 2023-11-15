@@ -4,13 +4,11 @@ import lombok.Getter;
 
 @Getter
 public enum ArtifactType {
-    JAR("jar"),
-    WAR("war"),
-    EAR("ear");
+  JAR("jar"),
+  WAR("war"),
+  EAR("ear");
 
-    final String extension;
+  final String extension;
 
-    ArtifactType(String extension) {
-        this.extension = extension;
-    }
+  ArtifactType(String extension) { this.extension = extension; }
 }

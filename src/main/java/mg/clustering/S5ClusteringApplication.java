@@ -9,8 +9,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableCaching
 @EnableAsync
 public class S5ClusteringApplication {
-    public static void main(String[] args) {
-        SpringApplication.run(S5ClusteringApplication.class, args);
-    }
-
+  public static void main(String[] args) {
+    SpringApplication.run(S5ClusteringApplication.class, args);
+  }
 }

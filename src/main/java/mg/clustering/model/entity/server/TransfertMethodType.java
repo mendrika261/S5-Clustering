@@ -4,13 +4,11 @@ import lombok.Getter;
 
 @Getter
 public enum TransfertMethodType {
-    FTP("FTP"),
-    SSH("SSH/SFTP"),
-    RSYNC("RSYNC");
+  FTP("FTP"),
+  SSH("SSH/SFTP"),
+  RSYNC("RSYNC");
 
-    final String name;
+  final String name;
 
-    TransfertMethodType(String name) {
-        this.name = name;
-    }
+  TransfertMethodType(String name) { this.name = name; }
 }

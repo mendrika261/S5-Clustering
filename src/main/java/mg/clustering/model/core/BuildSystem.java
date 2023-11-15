@@ -1,5 +1,5 @@
 package mg.clustering.model.core;
 
 public interface BuildSystem {
-    void build(String buildRepo);
+  void build(String buildRepo);
 }

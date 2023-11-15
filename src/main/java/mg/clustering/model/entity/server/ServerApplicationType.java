@@ -7,23 +7,23 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "server_application_type", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"name", "version"})
-})
+@Table(name = "server_application_type",
+       uniqueConstraints =
+       {
+         @UniqueConstraint(columnNames = {"name", "version"})
+       })
 public class ServerApplicationType {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "id", nullable = false)
+  private Long id;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+  @Column(name = "name", nullable = false) private String name;
 
-    @Column(name = "version", nullable = false)
-    private String version;
+  @Column(name = "version", nullable = false) private String version;
 
-    @Override
-    public String toString() {
-        return this.getName() + " - v" + this.getVersion();
-    }
+  @Override
+  public String toString() {
+    return this.getName() + " - v" + this.getVersion();
+  }
 }
