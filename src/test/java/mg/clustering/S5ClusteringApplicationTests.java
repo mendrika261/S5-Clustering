@@ -1,6 +1,7 @@
 package mg.clustering;
 
 import lombok.SneakyThrows;
+import mg.clustering.model.core.Utils;
 import mg.clustering.model.entity.deployment.ConfigFile;
 import mg.clustering.model.entity.deployment.ConfigFileType;
 import org.junit.jupiter.api.Test;
@@ -45,10 +46,7 @@ class S5ClusteringApplicationTests {
     @SneakyThrows
     @Test
     void contextLoads() {
-        String[] regexCondition = ConfigFileType.getExpressions();
-        List<ConfigFile> configFileList = scanConfigFilesIn(regexCondition, "/Users/mendrika/IdeaProjects/S5-Clustering/");
-        System.out.println(configFileList);
-        System.out.println("Working Directory = " + System.getProperty("user.dir"));
+
     }
 
 }

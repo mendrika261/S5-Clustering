@@ -11,13 +11,27 @@
 
 <h1>Deploy</h1>
 
-<h2>Server ready for deployment</h2>
-<form>
+<h2>Server active for deployment</h2>
+
+<p th:text="${errorMessage}"></p>
+
+<form method="post">
+    <div th:if="${build.getBuildType() == 'script'}">
+        <label for="buildFile">Build file</label>
+        <input id="buildFile">
+
+        <label for="artifactPath">Artifact path</label>
+        <input type="text" id="artifactPath"> <br>
+    </div>
+
     <label for="configFile">Config file</label>
-    <select id="configFile">
-        <option></option>
+    <select id="configFile" name="configFile" onchange="getFileContent(this.value)">
+        <option>None</option>
+        <option th:each="configFile:${configFileList}" th:value="${configFile.getName()}"
+                th:text="${configFile.getFileName()}">
+        </option>
     </select> <br>
-    <textarea cols="30" rows="3"></textarea> <br>
+    <textarea cols="30" rows="3" id="configFileContent" name="configFileContent"></textarea> <br>
 
     <table border="1">
         <tr>
@@ -27,30 +41,66 @@
             <th>Transfert method</th>
             <th>Check</th>
         </tr>
-        <tr>
+        <tr th:if="${serverList.isEmpty()}">
             <td colspan="5">No server ready for deployment</td>
         </tr>
-        <tr>
-            <td>Server 1</td>
-            <td>192.109.19.23</td>
+        <tr th:each="server: ${serverList}">
+            <td th:text="${server.getName()}"></td>
+            <td th:text="${server.getIpv4()}"></td>
             <td>
-                <select name="serverApp[]">
-                    <option value="tomcat">Tomcat - 8080</option>
-                    <option value="jboss">Jboss</option>
-                    <option value="weblogic">Weblogic</option>
+                <select name="serverApp[]" required disabled>
+                    <option th:each="serverApp: ${server.getServerApplications()}"
+                            th:value="${serverApp.getId()}"
+                            th:text="${serverApp}">
+                    </option>
                 </select>
             </td>
             <td>
-                <select name="transfertMethod[]">
-                    <option value="tomcat">SSH</option>
+                <select name="transfertMethod[]" required disabled>
+                    <option  th:each="transfertMethod: ${server.getTransfertMethods()}"
+                             th:value="${transfertMethod.getId()}"
+                             th:text="${transfertMethod}">
                 </select>
             </td>
-            <td><input type="checkbox" name="server[]" value="server1"></td>
+            <td><input type="checkbox" name="server[]" th:value="${server.getId()}" onchange="checkServer(this)"></td>
         </tr>
     </table>
 
     <input type="submit" value="Deploy">
 </form>
+
+<script>
+    function getFileContent(file) {
+        let xhr = new XMLHttpRequest();
+        let form = new FormData();
+        form.append('file', file);
+        xhr.open('POST', '/api/get_content', false);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200)
+                document.getElementById('configFileContent').value = xhr.responseText;
+            else
+                document.getElementById('configFileContent').value = '';
+        }
+        xhr.send(form);
+    }
+
+    function checkServer(checkbox) {
+        let server = checkbox.parentNode.parentNode;
+        if (checkbox.checked) {
+            server.querySelectorAll('select').forEach(
+                function (select) {
+                    select.disabled = false;
+                }
+            );
+        } else {
+            server.querySelectorAll('select').forEach(
+                function (select) {
+                    select.disabled = true;
+                }
+            );
+        }
+    }
+</script>
 
 </body>
 </html>

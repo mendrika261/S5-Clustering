@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "application_server", uniqueConstraints = {
+@Table(name = "server_application_type", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"name", "version"})
 })
 public class ServerApplicationType {

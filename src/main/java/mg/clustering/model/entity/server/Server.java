@@ -4,9 +4,11 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import mg.clustering.model.core.Utils;
+import org.springframework.scheduling.annotation.Async;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Getter
 @Setter
@@ -57,7 +59,8 @@ public class Server {
         this.ipv4 = ipv4;
     }
 
-    public boolean isReachable(String ipv4) {
-        return Utils.ping(ipv4);
+    @Async
+    public CompletableFuture<Boolean> isReachable() {
+        return Utils.INSTANCE.ping(getIpv4());
     }
 }

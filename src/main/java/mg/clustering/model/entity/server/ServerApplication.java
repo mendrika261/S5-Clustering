@@ -45,6 +45,8 @@ public class ServerApplication {
     public void setDeploymentPath(String deploymentPath) {
         if(deploymentPath == null || deploymentPath.isEmpty())
             throw new IllegalArgumentException("Invalid deployment path: " + deploymentPath + " for " + this);
+        if(!deploymentPath.endsWith("/"))
+            deploymentPath += "/";
         this.deploymentPath = deploymentPath;
     }
 }
