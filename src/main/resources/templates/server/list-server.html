@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+
+<head th:replace="~{fragments/head :: head(title='Servers')}"></head>
+
+<body class="layout-boxed">
+
+<div class="page">
+  <header th:replace="~{fragments/navbar}"></header>
+  <header th:replace="~{fragments/menu}"></header>
+
+  <div class="page-wrapper">
+    <!-- Page header -->
+    <div th:replace="~{fragments/page_header :: pageHeader(pageTitle='Our servers')}"></div>
+
+    <!-- Page body -->
+    <div class="page-body">
+      <div class="container-xl">
+        <!-- Content here -->
+
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <a class="btn btn-primary" th:href="@{/servers/add}">
+                  New server
+                  <i class="fa-solid fa-plus mx-2"></i>
+                </a>
+              </div>
+
+              <div class="card-body">
+                <table id="table" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>Server Name</th>
+                    <th>Ipv4</th>
+                    <th>OS</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr th:each="server: ${serverList}">
+                    <td th:text="${server.getName()}"></td>
+                    <td th:text="${server.getIpv4()}"></td>
+                    <td>
+                      <span th:text="${server.getOperatingSystem().getName()}"></span>
+                      <i th:class="${server.getOperatingSystem().getIcon()}"></i>
+                    </td>
+                    <td>
+                      <span th:if="${server.isReachable()}" class="badge bg-success">
+                        active <i class="fa-solid fa-check mx-1"></i>
+                      </span>
+                      <span th:unless="${server.isReachable()}" class="badge bg-danger">
+                        down <i class="fa-solid fa-triangle-exclamation mx-1"></i>
+                      </span>
+                    </td>
+                    <td>
+                      <a th:href="@{/servers/{id}/delete (id=${server.getId()})}" class="btn btn-danger">
+                        <i class="fa-solid fa-trash-alt"></i>
+                      </a>
+                      <a th:href="@{/servers/{id}/edit (id=${server.getId()})}" class="btn btn-warning">
+                        <i class="fa-solid fa-edit"></i>
+                      </a>
+                      <a th:href="@{/servers/{id}/manage (id=${server.getId()})}" class="btn btn-primary">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                      </a>
+                    </td>
+                  </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <th>Server Name</th>
+                      <th>Ipv4</th>
+                      <th>OS</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Page footer -->
+    <footer th:replace="~{fragments/footer}"></footer>
+  </div>
+</div>
+
+<script th:replace="~{fragments/script}"></script>
+</body>
+
+</html>

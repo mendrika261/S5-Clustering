@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Clustering</title>
+</head>
+<body>
+
+<h1>Define as load balancer</h1>
+
+<p th:text="${errorMessage}"></p>
+
+<form method="post" th:object="${haProxy}">
+    <label for="server">Server</label>
+    <select id="server" th:field="*{server}">
+        <option th:each="server: ${serverList}" th:value="${server.getId()}" th:text="${server}"></option>
+    </select>
+
+    <label for="configFile">Config file path</label>
+    <input type="text" id="configFile" th:field="*{configFile}"> <br>
+
+    <input type="submit">
+</form>
+
+</body>
+</html>

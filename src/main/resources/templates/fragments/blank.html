@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+
+<head th:replace="~{fragments/head}"></head>
+
+<body>
+
+<div class="page">
+  <header th:replace="~{fragments/navbar}"></header>
+  <header th:replace="~{fragments/menu}"></header>
+
+  <div class="page-wrapper">
+    <!-- Page header -->
+    <div th:replace="~{fragments/page_header :: pageHeader(pageTitle='Page d\'accueil')}"></div>
+
+    <!-- Page body -->
+    <div class="page-body">
+      <div class="container-xl">
+        <!-- Content here -->
+
+      </div>
+    </div>
+
+    <!-- Page footer -->
+    <footer th:replace="~{fragments/footer}"></footer>
+  </div>
+</div>
+
+<script th:replace="~{fragments/script}"></script>
+</body>
+
+</html>

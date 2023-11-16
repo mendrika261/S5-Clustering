@@ -1,0 +1,58 @@
+<script src="/js/demo-theme.min.js?1684106062"></script>
+
+<!-- Jquery -->
+<script src="/libs/jquery-validation/lib/jquery-3.1.1.js"></script>
+
+<!-- select2 -->
+<script src="/libs/select2/js/select2.full.min.js"></script>
+
+<!-- DataTables -->
+<script src="/libs/datatable/datatables.min.js"></script>
+<script>
+    $(function() {
+        $('.select2').select2({
+            theme: 'bootstrap4'
+        });
+
+        $("#table").DataTable({
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": false,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#table_wrapper .col-md-6:eq(0)');
+    });
+</script>
+
+<!-- Tabler Core -->
+<script src="/js/tabler.min.js?1684106062" defer></script>
+<script src="/js/demo.min.js?1684106062" defer></script>
+
+<!-- FontAwesome -->
+<script src="/libs/fontawesome/js/all.min.js"></script>
+
+<!-- Jquery validation -->
+<script src="/libs/jquery-validation/dist/jquery.validate.min.js"></script>
+<script>
+    $("#form").validate(
+        {
+            errorClass: "invalid-feedback",
+            errorElement: "div",
+            errorPlacement: function (error, element) {
+                const parent = $(element).parent();
+                if(parent.hasClass("input-icon") || parent.hasClass("input-group"))
+                    error.insertAfter(parent);
+                else
+                    error.insertAfter(element);
+            },
+            highlight: function (element) {
+                $(element).addClass("is-invalid is-invalid-lite");
+            },
+            unhighlight: function (element) {
+                $(element).removeClass("is-invalid is-invalid-lite");
+            }
+        }
+    );
+</script>
+
+<!-- leaflet -->
+<script src="/libs/leaflet/leaflet.js"></script>

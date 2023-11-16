@@ -28,21 +28,17 @@ public class SSHTransfert extends Transfert {
     @Override
     public void upload(String sourcePath, String destinationPath) {
         try {
-            System.out.println("1dfghj");
             Session session = getSession();
 
             ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
             channelSftp.connect();
 
-            System.out.println("2dfghj");
             channelSftp.put(sourcePath, destinationPath);
-            System.out.println("4dfghj");
 
             channelSftp.disconnect();
             session.disconnect();
 
             session.disconnect();
-            System.out.println("3dfghj");
         } catch (JSchException | SftpException e) {
             throw new RuntimeException("Error while transferring file via SSH to " + getHost() + " : " + e.getMessage());
         }

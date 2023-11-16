@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="~{fragments/head :: head(title='Server')}"></head>
+
+<body class="layout-boxed">
+
+<div class="page">
+  <header th:replace="~{fragments/navbar}"></header>
+  <header th:replace="~{fragments/menu}"></header>
+
+  <div class="page-wrapper">
+    <!-- Page header -->
+    <div th:replace="~{fragments/page_header ::
+            pageHeader(
+                pageTitle='Manage your server'
+            )}">
+    </div>
+
+    <!-- Page body -->
+    <div class="page-body">
+      <div class="container-xl">
+        <!-- Content here -->
+
+        <div class="row row-cards mb-5">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header d-flex justify-content-between">
+                <a class="btn btn-primary" th:href="@{/servers}">
+                  <i class="fa-solid fa-arrow-left mx-2"></i>
+                </a>
+                <div>
+                  <a class="btn btn-azure mx-2" th:href="@{/servers/{id}/server-apps/add (id=${server.getId()})}">
+                    Add a server app
+                    <i class="fa-solid fa-plus mx-2"></i>
+                  </a>
+                  <a class="btn btn-bitbucket" th:href="@{/servers/{id}/transfert-methods/add (id=${server.getId()})}">
+                    Add a transfert method
+                    <i class="fa-solid fa-plus mx-2"></i>
+                  </a>
+                </div>
+              </div>
+
+              <div class="card-body">
+                <div class="row row-cards">
+                  <div class="col-6">
+                    <div class="col-12">
+                      <div class="mb-3">
+                        <label class="form-label">
+                          Status:
+                          <span th:if="${server.isReachable()}" class="badge bg-success">
+                              active <i class="fa-solid fa-check mx-1"></i>
+                          </span>
+                          <span th:unless="${server.isReachable()}" class="badge bg-danger">
+                              down <i class="fa-solid fa-triangle-exclamation mx-1"></i>
+                          </span>
+                        </label>
+                        <h2 th:text="${server}" ></h2>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-3 d-flex flex-column justify-content-end">
+                        <div class="mb-3">
+                          <label class="form-label">OS</label>
+                          <h3 class="bg bg-pink-lt pt-2 pb-2 text-center">
+                            <i th:class="${server.getOperatingSystem().getIcon() + ' fa-lg'}"></i>
+                          </h3>
+                        </div>
+                      </div>
+                      <div class="col-3 d-flex flex-column justify-content-end">
+                        <div class="mb-3">
+                          <label class="form-label">Server App</label>
+                          <h3 th:text="${server.getServerApplications().size()}" class="bg bg-azure-lt pt-2 pb-2 text-center">
+                          </h3>
+                        </div>
+                      </div>
+                      <div class="col-3 d-flex flex-column justify-content-end">
+                        <div class="mb-3">
+                          <label class="form-label">Deployed App</label>
+                          <h3 th:text="0" class="bg bg-purple-lt pt-2 pb-2 text-center">
+                          </h3>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <div class="mb-3 mb-0">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-6">
+                    <div class="text-end text-secondary">
+                      <i class="fa-10x fa-solid fa-server"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row mb-5" th:unless="${server.getTransfertMethods().isEmpty()}">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="space-y-4">
+
+                  <div>
+                    <h3 class="mb-3">Transfert method capabilities</h3>
+                    <div id="faq-1" class="accordion" role="tablist" aria-multiselectable="true">
+
+                      <div class="accordion-item" th:each="tm, stat: ${server.getTransfertMethods()}">
+                        <div class="accordion-header" role="tab">
+                          <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#faq-1-1" aria-expanded="false"
+                                  th:text="${tm.transfertMethodType}">
+                          </button>
+                        </div>
+                        <div id="faq-1-1" class="accordion-collapse collapse" role="tabpanel" data-bs-parent="#faq-1" style="">
+                          <div class="accordion-body pt-0">
+                            <ul class="list-group">
+                              <li class="list-group-item">
+                                Username: <span th:text="${tm.getUsername()}" class="fw-bolder"></span>
+                              </li>
+                              <li class="list-group-item">
+                                Port: <span th:text="${tm.getPort()}" class="fw-bolder"></span>
+                              </li>
+                            </ul>
+                            <div class="text-end">
+                              <a class="btn btn-outline-danger mt-1" th:href="@{/servers/{serverId}/transfert-methods/{tmId}/delete (serverId=${serverId}, tmId=${tm.getId()})}">
+                                Supprimer
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" th:unless="${server.getServerApplications().isEmpty()}">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="space-y-4">
+
+                  <div>
+                    <h3 class="mb-3">Server applications</h3>
+                    <div id="faq-2" class="accordion" role="tablist" aria-multiselectable="true">
+
+                      <div class="accordion-item" th:each="svApp, stat: ${server.getServerApplications()}">
+                        <div class="accordion-header" role="tab">
+                          <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#faq-2-1" aria-expanded="false"
+                                  th:text="${svApp}">
+                          </button>
+                        </div>
+                        <div id="faq-2-1" class="accordion-collapse collapse" role="tabpanel" data-bs-parent="#faq-2" style="">
+                          <div class="accordion-body pt-0">
+                            <ul class="list-group">
+                              <li class="list-group-item">
+                                Deployment Path: <span th:text="${svApp.getDeploymentPath()}" class="fw-bolder"></span>
+                              </li>
+                              <li class="list-group-item">
+                                Port: <span th:text="${svApp.getPort()}" class="fw-bolder"></span>
+                              </li>
+                            </ul>
+                            <div class="text-end">
+                              <a class="btn btn-outline-danger mt-1" th:href="@{/servers/{serverId}/server-apps/{svId}/delete (serverId=${serverId}, svId=${svApp.getId()})}">
+                                Supprimer
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Page footer -->
+    <footer th:replace="~{fragments/footer}"></footer>
+  </div>
+</div>
+
+<script th:replace="~{fragments/script}"></script>
+</body>
+
+</html>

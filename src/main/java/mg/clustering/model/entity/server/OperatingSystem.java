@@ -17,6 +17,9 @@ public class OperatingSystem {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "icon")
+    private String icon;
+
     @Column(name = "os_type")
     @Enumerated(EnumType.STRING)
     private OperatingSystemType operatingSystemType;

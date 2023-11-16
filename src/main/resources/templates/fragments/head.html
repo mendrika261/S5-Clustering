@@ -1,0 +1,32 @@
+<head th:fragment="head(title)">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title th:text="${title}">RH Associative</title>
+
+  <!-- CSS files -->
+  <link href="/libs/datatable/datatables.min.css" rel="stylesheet">
+  <link href="/css/tabler.min.css?1684106062" rel="stylesheet"/>
+  <link href="/css/tabler-flags.min.css?1684106062" rel="stylesheet"/>
+  <link href="/css/tabler-payments.min.css?1684106062" rel="stylesheet"/>
+  <link href="/css/tabler-vendors.min.css?1684106062" rel="stylesheet"/>
+  <link href="/css/demo.min.css?1684106062" rel="stylesheet"/>
+  <style>
+    @import url('https://rsms.me/inter/inter.css');
+    :root {
+      --tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+    }
+    body {
+      font-feature-settings: "cv03", "cv04", "cv11";
+    }
+  </style>
+
+  <!-- Font Awesome -->
+  <link href="/libs/fontawesome/css/all.min.css" rel="stylesheet"/>
+
+  <!-- leaflet -->
+  <link rel="stylesheet" href="/libs/leaflet/leaflet.css" />
+
+  <!-- select2 -->
+    <link rel="stylesheet" href="/libs/select2/css/select2.min.css" />
+    <link rel="stylesheet" href="/libs/select2/css/select2-bootstrap4.min.css" />
+</head>

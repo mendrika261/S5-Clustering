@@ -1,9 +1,7 @@
 package mg.clustering.controller;
 
 import mg.clustering.model.entity.server.*;
-import mg.clustering.repository.server.OperatingSystemRepository;
-import mg.clustering.repository.server.ServerApplicationTypeRepository;
-import mg.clustering.repository.server.ServerRepository;
+import mg.clustering.repository.server.*;
 import mg.clustering.service.ServerService;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
@@ -27,14 +25,29 @@ public class ServerController {
     private final ServerApplicationTypeRepository serverApplicationTypeRepository;
     private final ServerRepository serverRepository;
     private final ServerService serverService;
+    private final ServerApplicationRepository serverApplicationRepository;
+    private final TransfertMethodRepository transfertMethodRepository;
 
     public ServerController(OperatingSystemRepository operatingSystemRepository,
                             ServerApplicationTypeRepository serverApplicationTypeRepository,
-                            ServerRepository serverRepository, ServerService serverService) {
+                            ServerRepository serverRepository, ServerService serverService,
+                            ServerApplicationRepository serverApplicationRepository,
+                            TransfertMethodRepository transfertMethodRepository) {
         this.operatingSystemRepository = operatingSystemRepository;
         this.serverApplicationTypeRepository = serverApplicationTypeRepository;
         this.serverRepository = serverRepository;
         this.serverService = serverService;
+        this.serverApplicationRepository = serverApplicationRepository;
+        this.transfertMethodRepository = transfertMethodRepository;
+    }
+
+
+    // CRUD Server
+    @GetMapping("/servers")
+    public String listServers(Model model) {
+        List<Server> serverList = serverRepository.findAll(Sort.by("name", "ipv4"));
+        model.addAttribute("serverList", serverList);
+        return "server/list-server";
     }
 
     @GetMapping("/servers/add")
@@ -66,7 +79,64 @@ public class ServerController {
         return "redirect:/servers/add";
     }
 
+    @GetMapping("/servers/{serverId}/edit")
+    public String editServer(@PathVariable long serverId, Model model) {
+        Optional<Server> serverOptional = serverRepository.findById(serverId);
+        if (serverOptional.isEmpty())
+            return "redirect:/servers/add";
 
+        List<OperatingSystem> operatingSystemList = operatingSystemRepository
+                .findAll(Sort.by("operatingSystemType", "name"));
+
+        model.addAttribute("operatingSystemList", operatingSystemList);
+        model.addAttribute("server", serverOptional.get());
+        return "server/edit-server";
+    }
+
+    @PostMapping("/servers/{serverId}/edit")
+    public String editServer(@PathVariable long serverId,
+                             @ModelAttribute Server server,
+                             BindingResult bindingResult,
+                             RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("server", server);
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "Verify that your " +
+                            Objects.requireNonNull(bindingResult.getFieldError()).getField() + " is valid");
+            return "redirect:/servers/{serverId}/edit";
+        }
+
+        try {
+            serverService.editServer(serverId, server);
+        } catch (DataIntegrityViolationException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Server with IPv4: " + server.getIpv4() + " already exists");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e);
+        }
+        return "redirect:/servers/{serverId}/edit";
+    }
+
+    @GetMapping("/servers/{serverId}/delete")
+    public String deleteServer(@PathVariable long serverId) {
+        serverRepository.deleteById(serverId);
+        return "redirect:/servers";
+    }
+
+
+    // Server management
+    @GetMapping("/servers/{serverId}/manage")
+    public String manageServer(@PathVariable long serverId, Model model) {
+        Optional<Server> serverOptional = serverRepository.findById(serverId);
+        if (serverOptional.isEmpty())
+            return "redirect:/servers/add";
+
+        model.addAttribute("server", serverOptional.get());
+        return "server/manage-server";
+    }
+
+
+
+    // Server applications
     @GetMapping("/servers/{serverId}/server-apps/add")
     public String addServerApp(@ModelAttribute("serverApplication") ServerApplication serverApplication,
                                      @PathVariable long serverId,
@@ -102,10 +172,18 @@ public class ServerController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
         }
-        return "redirect:/servers/{serverId}/server-apps/add";
+        return "redirect:/servers/{serverId}/manage";
+    }
+
+    @GetMapping("/servers/{serverId}/server-apps/{serverAppId}/delete")
+    public String deleteServerApp(@PathVariable long serverId, @PathVariable long serverAppId) {
+        serverApplicationRepository.deleteById(serverAppId);
+        return "redirect:/servers/{serverId}/manage";
     }
 
 
+
+    // Transfert methods
     @GetMapping("/servers/{serverId}/transfert-methods/add")
     public String addTransfertMethod(@PathVariable long serverId,
                                      Model model,
@@ -142,6 +220,12 @@ public class ServerController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
         }
-        return "redirect:/servers/{serverId}/transfert-methods/add";
+        return "redirect:/servers/{serverId}/manage";
+    }
+
+    @GetMapping("/servers/{serverId}/transfert-methods/{transfertMethodId}/delete")
+    public String deleteTransfertMethod(@PathVariable long serverId, @PathVariable long transfertMethodId) {
+        transfertMethodRepository.deleteById(transfertMethodId);
+        return "redirect:/servers/{serverId}/manage";
     }
 }

@@ -60,7 +60,11 @@ public class Server {
     }
 
     @Async
-    public CompletableFuture<Boolean> isReachable() {
+    public CompletableFuture<Boolean> isReachableAsync() {
         return Utils.INSTANCE.ping(getIpv4());
+    }
+
+    public boolean isReachable() {
+        return Utils.INSTANCE.ping(getIpv4()).join();
     }
 }

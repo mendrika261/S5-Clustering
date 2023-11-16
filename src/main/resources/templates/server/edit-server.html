@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="~{fragments/head :: head(title='Update server')}"></head>
+
+<body class="layout-boxed">
+
+<div class="page">
+    <header th:replace="~{fragments/navbar}"></header>
+    <header th:replace="~{fragments/menu}"></header>
+
+    <div class="page-wrapper">
+        <!-- Page header -->
+        <div th:replace="~{fragments/page_header :: pageHeader(pageTitle='Modify server information')}"></div>
+
+        <!-- Page body -->
+        <div class="page-body">
+            <div class="container-xl">
+                <!-- Content here -->
+
+                <div class="row">
+                    <div class="col-12">
+                        <form class="card" th:object="${server}" method="post" id="form">
+                            <div class="card-header">
+                                <a th:href="@{/servers}" class="btn btn-primary">
+                                    Show all servers
+                                    <i class="fa-solid fa-list mx-2"></i>
+                                </a>
+                            </div>
+
+                            <div class="card-body">
+
+                                <p class="text-danger" th:text="${errorMessage}"></p>
+
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Serveur name</label>
+                                            <input type="text" class="form-control" placeholder="Serveur xxx" th:field="*{name}" required />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Operating System</label>
+                                            <select class="form-select select2" id="os" th:field="*{operatingSystem}" required>
+                                                <option th:each="os: ${operatingSystemList}" th:value="${os.getId()}" th:text="${os}"
+                                                    th:selected="${server.getOperatingSystem().getId() == os.getId()}"></option>
+                                            </select> <br>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">IPv4</label>
+                                            <input type="text" class="form-control" placeholder="xxx.xxx.xxx.xxx" required th:field="*{ipv4}" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="card-footer d-flex justify-content-end">
+                                <button type="submit" class="btn btn-warning">
+                                    Update server
+                                    <i class="fa-solid fa-edit mx-1"></i>
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Page footer -->
+        <footer th:replace="~{fragments/footer}"></footer>
+    </div>
+</div>
+
+<script th:replace="~{fragments/script}"></script>
+</body>
+
+</html>
+
+
+
+
+

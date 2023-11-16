@@ -21,6 +21,7 @@ import java.util.stream.Stream;
 public class Utils {
     public static String PWD = System.getProperty("user.dir")+"/";
     public static String REPOSITORY_PATH = PWD+"repository/";
+    public static String CONFIG_PATH = PWD+"config/";
     public static Utils INSTANCE = new Utils();
 
     public static boolean isValidIpV4(String ipv4) {

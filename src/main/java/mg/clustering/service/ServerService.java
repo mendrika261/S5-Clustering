@@ -9,8 +9,6 @@ import mg.clustering.repository.server.TransfertMethodRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 
 @Service
 public class ServerService {
@@ -44,8 +42,16 @@ public class ServerService {
     public List<Server> getAllReadyServer() {
         List<Server> serverList = serverRepository.findAll();
 
-        serverList.removeIf(server -> !server.isReachable().join());
+        serverList.removeIf(server -> !server.isReachableAsync().join());
 
         return serverList;
+    }
+
+    public void editServer(long serverId, Server server) {
+        Server serverToEdit = serverRepository.findById(serverId).orElseThrow(() -> new RuntimeException("Server not found"));
+        serverToEdit.setName(server.getName());
+        serverToEdit.setIpv4(server.getIpv4());
+        serverToEdit.setOperatingSystem(server.getOperatingSystem());
+        serverRepository.saveAndFlush(serverToEdit);
     }
 }
