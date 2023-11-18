@@ -1,31 +1,86 @@
-<!doctype html>
-<html lang="fr" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Clustering</title>
-</head>
-<body>
-<h1>Add a Server Application for: <span th:text="${server}"></span></h1>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 
-<p th:text="${errorMessage}"></p>
+<head th:replace="~{fragments/head :: head(title='Add server app')}"></head>
 
-<form method="post" th:object="${serverApplication}">
-    <label for="serverApp">Application Server</label>
-    <select id="serverApp" th:field="*{serverApplicationType}">
-        <option th:each="serverApp: ${serverApplicationList}" th:value="${serverApp.getId()}" th:text="${serverApp}"></option>
-    </select> <br>
+<body class="layout-boxed">
 
-    <label for="path">Deployment path</label>
-    <input type="text" id="path" th:field="*{deploymentPath}"> <br>
+<div class="page">
+    <header th:replace="~{fragments/navbar}"></header>
+    <header th:replace="~{fragments/menu}"></header>
 
-    <label for="port">Port</label>
-    <input type="text" id="port" th:field="*{port}"> <br>
+    <div class="page-wrapper">
+        <!-- Page header -->
+        <div th:replace="~{fragments/page_header :: pageHeader(pageTitle='Add a new server app for: ' + ${server})}"></div>
 
-    <input type="submit">
-</form>
+        <!-- Page body -->
+        <div class="page-body">
+            <div class="container-xl">
+                <!-- Content here -->
 
+                <div class="row">
+                    <div class="col-12">
+                        <form class="card" th:object="${serverApplication}" method="post" id="form">
+                            <div class="card-header">
+                                <a th:href="@{/servers/{serverId}/manage (serverId=${serverId})}" class="btn btn-primary">
+                                    <i class="fa-solid fa-arrow-left mx-2"></i>
+                                </a>
+                            </div>
+
+                            <div class="card-body">
+
+                                <p class="text-danger" th:text="${errorMessage}"></p>
+
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Application Server</label>
+                                            <select class="form-select select2" id="os" th:field="*{serverApplicationType}" required>
+                                                <option th:each="serverApp: ${serverApplicationList}"
+                                                        th:value="${serverApp.getId()}"
+                                                        th:text="${serverApp}"></option>
+                                            </select> <br>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Port</label>
+                                            <input type="number" class="form-control" th:field="*{port}" required min="10" minlength="2" maxlength="5"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">Deployment path</label>
+                                            <input type="text" class="form-control" required th:field="*{deploymentPath}" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="card-footer d-flex justify-content-end">
+                                <button type="submit" class="btn btn-success">
+                                    Add server app
+                                    <i class="fa-solid fa-plus mx-1"></i>
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Page footer -->
+        <footer th:replace="~{fragments/footer}"></footer>
+    </div>
+</div>
+
+<script th:replace="~{fragments/script}"></script>
 </body>
+
 </html>

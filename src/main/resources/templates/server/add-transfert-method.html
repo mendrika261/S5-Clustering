@@ -1,37 +1,96 @@
-<!doctype html>
-<html lang="fr" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Clustering</title>
-</head>
-<body>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 
-<h1>Add a transfert method for: <span th:text="${server}"></span></h1>
+<head th:replace="~{fragments/head :: head(title='Add transfert method')}"></head>
 
-<p th:text="${errorMessage}"></p>
+<body class="layout-boxed">
 
-<form method="post" th:object="${transfertMethod}">
-    <label for="transfertMethodType">Type</label>
-    <select id="transfertMethodType" th:field="*{transfertMethodType}">
-        <option th:each="tr: ${transfertMethodTypes}"
-                th:value="${tr}"
-                th:text="${tr}"></option>
-    </select> <br>
+<div class="page">
+    <header th:replace="~{fragments/navbar}"></header>
+    <header th:replace="~{fragments/menu}"></header>
 
-    <label for="username">Username</label>
-    <input type="text" id="username" th:field="*{username}"> <br>
+    <div class="page-wrapper">
+        <!-- Page header -->
+        <div th:replace="~{fragments/page_header :: pageHeader(pageTitle='Add a new transfert method for: ' + ${server})}"></div>
 
-    <label for="password">Password</label>
-    <input type="text" id="password" th:field="*{password}"> <br>
+        <!-- Page body -->
+        <div class="page-body">
+            <div class="container-xl">
+                <!-- Content here -->
 
-    <label for="port">Port</label>
-    <input type="text" id="port" th:field="*{port}"> <br>
+                <div class="row">
+                    <div class="col-12">
+                        <form class="card" th:object="${transfertMethod}" method="post" id="form">
+                            <div class="card-header">
+                                <a th:href="@{/servers/{serverId}/manage (serverId=${serverId})}" class="btn btn-primary">
+                                    <i class="fa-solid fa-arrow-left mx-2"></i>
+                                </a>
+                            </div>
 
-    <input type="submit">
-</form>
+                            <div class="card-body">
 
+                                <p class="text-danger" th:text="${errorMessage}"></p>
+
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Transfert Method</label>
+                                            <select class="form-select select2" id="os" th:field="*{transfertMethodType}" required>
+                                                <option th:each="serverApp: ${transfertMethodTypes}"
+                                                        th:value="${serverApp}"
+                                                        th:text="${serverApp}"></option>
+                                            </select> <br>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Port</label>
+                                            <input type="number" class="form-control" th:field="*{port}" required min="10" minlength="2" maxlength="5"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">Username</label>
+                                            <input type="text" class="form-control" required th:field="*{username}" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">Key</label>
+                                            <textarea type="text" class="form-control" required th:field="*{password}">
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="card-footer d-flex justify-content-end">
+                                <button type="submit" class="btn btn-success">
+                                    Add transfert method
+                                    <i class="fa-solid fa-plus mx-1"></i>
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Page footer -->
+        <footer th:replace="~{fragments/footer}"></footer>
+    </div>
+</div>
+
+<script th:replace="~{fragments/script}"></script>
 </body>
+
 </html>

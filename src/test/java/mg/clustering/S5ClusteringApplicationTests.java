@@ -6,11 +6,13 @@ import mg.clustering.model.entity.deployment.HaProxyConfigFile;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.crypto.KeyGenerator;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -45,8 +47,9 @@ class S5ClusteringApplicationTests {
     @SneakyThrows
     @Test
     void contextLoads() {
-        HaProxyConfigFile ha = HaProxyConfigFile.parseHaProxyConfigFile(getFileContent(Paths.get("src/test/haproxy.cfg")));
-        System.out.println(ha);
+        KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+        keyGenerator.init(128);
+        System.out.println(Arrays.toString(keyGenerator.generateKey().getEncoded()));
     }
 
 }
