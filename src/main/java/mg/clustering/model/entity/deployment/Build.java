@@ -74,4 +74,8 @@ public class Build {
         }
         buildSystem.build(Utils.REPOSITORY_PATH + getRepository());
     }
+
+    public void deleteBuild() {
+        Utils.INSTANCE.deleteDirectory(Utils.REPOSITORY_PATH + getRepository());
+    }
 }

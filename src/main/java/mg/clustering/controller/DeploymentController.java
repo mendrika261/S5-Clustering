@@ -1,10 +1,7 @@
 package mg.clustering.controller;
 
-import mg.clustering.model.core.Utils;
 import mg.clustering.model.entity.deployment.*;
 import mg.clustering.model.entity.server.Server;
-import mg.clustering.model.entity.server.ServerApplication;
-import mg.clustering.model.entity.server.TransfertMethod;
 import mg.clustering.repository.deployment.BuildRepository;
 import mg.clustering.service.DeploymentService;
 import mg.clustering.service.ServerService;
@@ -15,7 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -33,6 +29,15 @@ public class DeploymentController {
         this.buildRepository = buildRepository;
         this.deploymentService = deploymentService;
     }
+
+    // Build
+    @GetMapping("/deployments")
+    public String deployments(Model model) {
+        List<Build> buildList = buildRepository.findAll();
+        model.addAttribute("buildList", buildList);
+        return "deployment/list-deployment";
+    }
+
 
     @GetMapping("/deployments/add")
     public String addDeployment(@ModelAttribute("build") Build build, Model model) {
@@ -61,9 +66,21 @@ public class DeploymentController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
         }
-        return "redirect:/deployments/add";
+        return "redirect:/deployments";
     }
 
+    @GetMapping("/deployments/{buildId}/delete")
+    public String deleteDeployment(@PathVariable long buildId, RedirectAttributes redirectAttributes) {
+        try {
+            deploymentService.deleteBuild(buildId);
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+        }
+        return "redirect:/deployments";
+    }
+
+
+    // Deploy
     @GetMapping("/deployments/{buildId}/deploy")
     public String deploy(@PathVariable long buildId,Model model) {
         Optional<Build> buildOptional = buildRepository.findById(buildId);

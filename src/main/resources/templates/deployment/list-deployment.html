@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+
+<head th:replace="~{fragments/head :: head(title='Build')}"></head>
+
+<body class="layout-boxed">
+
+<div class="page">
+  <header th:replace="~{fragments/navbar}"></header>
+  <header th:replace="~{fragments/menu}"></header>
+
+  <div class="page-wrapper">
+    <!-- Page header -->
+    <div th:replace="~{fragments/page_header :: pageHeader(pageTitle='Our builds')}"></div>
+
+    <!-- Page body -->
+    <div class="page-body">
+      <div class="container-xl">
+        <!-- Content here -->
+
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <a class="btn btn-primary" th:href="@{/deployments/add}">
+                    Add a new build
+                  <i class="fa-solid fa-plus mx-2"></i>
+                </a>
+              </div>
+
+              <div class="card-body">
+                <table id="table" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>Git url</th>
+                    <th>Artifact type</th>
+                    <th>Build System</th>
+                    <th>Actions</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr th:each="build: ${buildList}">
+                    <td th:text="${build.getGitUrl()}"></td>
+                    <td th:text="${build.getArtifactType()}"></td>
+                    <td th:text="${build.getBuildType()}"></td>
+                    <td>
+                      <a th:href="@{/deployments/{id}/delete (id=${build.getId()})}" class="btn btn-danger">
+                        <i class="fa-solid fa-trash-alt"></i>
+                      </a>
+                      <a th:href="@{/deployments/{buildId}/deploy (buildId=${build.getId()})}" class="btn btn-success">
+                        <i class="fa-solid fa-rocket"></i>
+                      </a>
+                    </td>
+                  </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <th>Git url</th>
+                      <th>Artifact type</th>
+                      <th>Build System</th>
+                      <th>Actions</th>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Page footer -->
+    <footer th:replace="~{fragments/footer}"></footer>
+  </div>
+</div>
+
+<script th:replace="~{fragments/script}"></script>
+</body>
+
+</html>

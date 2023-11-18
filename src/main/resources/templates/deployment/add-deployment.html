@@ -1,34 +1,117 @@
-<!doctype html>
-<html lang="fr" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Clustering</title>
-</head>
-<body>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 
-<h1>Add a deployment</h1>
+<head th:replace="~{fragments/head :: head(title='Add build')}"></head>
 
-<p th:text="${errorMessage}"></p>
+<body class="layout-boxed">
 
-<form method="post" th:object="${build}">
-    <label for="gitUrl">Git url</label>
-    <input type="text" id="gitUrl" th:field="*{gitUrl}"> <br>
+<div class="page">
+    <header th:replace="~{fragments/navbar}"></header>
+    <header th:replace="~{fragments/menu}"></header>
 
-    <label for="buildType">Build system</label>
-    <select id="buildType" th:field="*{buildType}">
-        <option th:each="bt: ${buildTypes}" th:value="${bt}" th:text="${bt}"></option>
-    </select>
+    <div class="page-wrapper">
+        <!-- Page header -->
+        <div th:replace="~{fragments/page_header :: pageHeader(pageTitle='Add a new build')}"></div>
 
-    <label for="artifactType">Artifact</label>
-    <select id="artifactType" th:field="*{artifactType}">
-        <option th:each="at: ${artifactTypes}" th:value="${at}" th:text="${at}"></option>
-    </select>
+        <!-- Page body -->
+        <div class="page-body">
+            <div class="container-xl">
+                <!-- Content here -->
 
-    <input type="submit">
-</form>
+                <div class="row">
+                    <div class="col-12">
+                        <form class="card" th:object="${build}" method="post" id="form">
+                            <div class="card-header">
+                                <a th:href="@{/deployments}" class="btn btn-primary">
+                                    Show all builds
+                                    <i class="fa-solid fa-list mx-2"></i>
+                                </a>
+                            </div>
 
+                            <div class="card-body">
+
+                                <p class="text-danger" th:text="${errorMessage}"></p>
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">Git url</label>
+                                            <input type="text" class="form-control" required th:field="*{gitUrl}" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Build System</label>
+                                            <select class="form-select select2" th:field="*{buildType}" required>
+                                                <option th:each="bt: ${buildTypes}" th:value="${bt}" th:text="${bt}"></option>
+                                            </select> <br>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Artifact</label>
+                                            <select class="form-select select2" th:field="*{artifactType}" required>
+                                                <option th:each="at: ${artifactTypes}" th:value="${at}" th:text="${at}"></option>
+                                            </select> <br>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="card-footer d-flex justify-content-end">
+                                <button type="button" class="btn btn-success" onclick="handleSubmit()">
+                                    Add build
+                                    <i class="fa-solid fa-plus mx-1"></i>
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="modal modal-blur fade" id="modal-danger" tabindex="-1" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-status bg-success"></div>
+                    <div class="modal-body text-center py-4">
+                        <i class="icon mb-2 text-success icon-lg fa-solid fa-lg fa-exclamation-circle"></i>
+                        <div class="text-muted">We are cloning your repository.<br>Do not close this window, it can take a while</div>
+                        <br>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-indeterminate bg-green"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page footer -->
+        <footer th:replace="~{fragments/footer}"></footer>
+    </div>
+</div>
+
+<script th:replace="~{fragments/script}"></script>
+<script>
+    function handleSubmit() {
+        if ($('#form').valid()) {
+            $('#modal-danger').modal('show');
+            setTimeout(function () {
+                $('#form').submit();
+            }, 1000);
+        } else {
+            $('#form').validate();
+        }
+    }
+</script>
 </body>
+
 </html>
+

@@ -42,8 +42,10 @@ public class DeploymentService {
     @Transactional
     public void makeBuild(Build build) {
         buildRepository.save(build);
-        if(!build.cloneGit())
+        if(!build.cloneGit()) {
+            build.deleteBuild();
             throw new RuntimeException("Error while cloning git repository " + build.getGitUrl());
+        }
     }
 
     @Transactional
@@ -76,5 +78,11 @@ public class DeploymentService {
         config.writeFile();
         build.processBuild();
         deploymentList.forEach(Deployment::deploy);
+    }
+
+    public void deleteBuild(long buildId) {
+        Build build = buildRepository.findById(buildId).orElseThrow(() -> new RuntimeException("Build to delete not found"));
+        build.deleteBuild();
+        buildRepository.delete(build);
     }
 }

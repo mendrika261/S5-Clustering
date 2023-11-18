@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -132,5 +133,24 @@ public class Utils {
         } catch (GitAPIException e) {
             throw new RuntimeException("Error while cloning git repository " + gitUrl + " : " + e.getMessage());
         }
+    }
+
+    public void deleteDirectory(File directory) {
+        if (directory.isDirectory()) {
+            File[] files = directory.listFiles();
+
+            if (files != null) {
+                for (File file : files) {
+                    deleteDirectory(file);
+                }
+            }
+        }
+
+        if (!directory.delete())
+            throw new RuntimeException("Error while deleting directory " + directory.getPath());
+    }
+
+    public void deleteDirectory(String directory) {
+        deleteDirectory(new File(directory));
     }
 }
