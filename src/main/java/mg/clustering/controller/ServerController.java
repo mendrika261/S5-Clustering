@@ -1,5 +1,6 @@
 package mg.clustering.controller;
 
+import mg.clustering.model.entity.deployment.Deployment;
 import mg.clustering.model.entity.server.*;
 import mg.clustering.repository.server.*;
 import mg.clustering.service.ServerService;
@@ -130,7 +131,10 @@ public class ServerController {
         if (serverOptional.isEmpty())
             return "redirect:/servers/add";
 
+        List<Deployment> deploymentList = serverService.getDeploymentList(serverId);
+
         model.addAttribute("server", serverOptional.get());
+        model.addAttribute("deploymentList", deploymentList);
         return "server/manage-server";
     }
 

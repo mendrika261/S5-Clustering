@@ -77,7 +77,7 @@
                       <div class="col-3 d-flex flex-column justify-content-end">
                         <div class="mb-3">
                           <label class="form-label">Deployed App</label>
-                          <h3 th:text="0" class="bg bg-purple-lt pt-2 pb-2 text-center">
+                          <h3 th:text="${deploymentList.size()}" class="bg bg-purple-lt pt-2 pb-2 text-center">
                           </h3>
                         </div>
                       </div>
@@ -100,6 +100,66 @@
           </div>
         </div>
 
+        <div class="row mb-5" th:unless="${deploymentList.isEmpty()}">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="space-y-4">
+
+                  <div>
+                    <h3 class="mb-3">
+                      Deployed applications
+                      <i class="fa-solid fa-rocket mx-2"></i>
+                    </h3>
+                    <div id="faq-3" class="accordion" role="tablist" aria-multiselectable="true">
+
+                      <div class="accordion-item" th:each="depl, stat: ${deploymentList}">
+                        <div class="accordion-header" role="tab">
+                          <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#faq-3-1" aria-expanded="false">
+                            <span th:text="${depl.getBuild().getRepository()}"></span>
+                            (<a th:href="${depl.getLink()}" th:text="${depl.getLink()}"></a>)
+                          </button>
+                        </div>
+                        <div id="faq-3-1" class="accordion-collapse collapse" role="tabpanel" data-bs-parent="#faq-3" style="">
+                          <div class="accordion-body pt-0">
+                            <ul class="list-group">
+                              <li class="list-group-item">
+                                Git url: <span th:text="${depl.getBuild().getGitUrl()}" class="fw-bolder"></span>
+                              </li>
+                              <li class="list-group-item">
+                                Status:
+                                <span th:if="${depl.getStatus() == depl.getStatus().DEPLOYED}" th:text="${depl.getStatus()}" class="badge bg-success"></span>
+                                <span th:if="${depl.getStatus() == depl.getStatus().DEPLOYING}" th:text="${depl.getStatus()}" class="badge bg-warning"></span>
+                                <span th:if="${depl.getStatus() == depl.getStatus().FAILED}" th:text="${depl.getStatus()}" class="badge bg-danger"></span>
+                                <span th:unless="${depl.getStatus() == depl.getStatus().DEPLOYED || depl.getStatus() == depl.getStatus().DEPLOYING || depl.getStatus() == depl.getStatus().FAILED}" th:text="${depl.getStatus()}" class="badge bg-secondary"></span>
+                              </li>
+                              <li class="list-group-item">
+                                Artifact: <span th:text="${depl.getArtifactFile()}" class="fw-bolder"></span>
+                              </li>
+                              <li class="list-group-item">
+                                Time: <span th:text="${depl.getDatetime()}" class="fw-bolder"></span>
+                              </li>
+                              <li class="list-group-item">
+                                Remarks: <span th:text="${depl.getDeploymentMessage()}" class="fw-bolder"></span>
+                              </li>
+                            </ul>
+                            <div class="text-end">
+                              <a class="btn btn-outline-danger mt-1" th:href="@{/servers/{serverId}/server-apps/{deplId}/delete (serverId=${serverId}, deplId=${depl.getId()})}">
+                                Supprimer
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <div class="row mb-5" th:unless="${server.getTransfertMethods().isEmpty()}">
           <div class="col-12">
@@ -108,7 +168,10 @@
                 <div class="space-y-4">
 
                   <div>
-                    <h3 class="mb-3">Transfert method capabilities</h3>
+                    <h3 class="mb-3">
+                      Transfert method capabilities
+                      <i class="fa-solid fa-arrow-right-arrow-left mx-2"></i>
+                    </h3>
                     <div id="faq-1" class="accordion" role="tablist" aria-multiselectable="true">
 
                       <div class="accordion-item" th:each="tm, stat: ${server.getTransfertMethods()}">
@@ -145,14 +208,17 @@
           </div>
         </div>
 
-        <div class="row" th:unless="${server.getServerApplications().isEmpty()}">
+        <div class="row mb-5" th:unless="${server.getServerApplications().isEmpty()}">
           <div class="col-12">
             <div class="card">
               <div class="card-body">
                 <div class="space-y-4">
 
                   <div>
-                    <h3 class="mb-3">Server applications</h3>
+                    <h3 class="mb-3">
+                      Server applications
+                      <i class="fa-solid fa-clapperboard mx-2"></i>
+                    </h3>
                     <div id="faq-2" class="accordion" role="tablist" aria-multiselectable="true">
 
                       <div class="accordion-item" th:each="svApp, stat: ${server.getServerApplications()}">
@@ -188,6 +254,7 @@
             </div>
           </div>
         </div>
+
 
       </div>
     </div>

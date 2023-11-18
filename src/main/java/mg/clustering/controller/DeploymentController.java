@@ -113,10 +113,12 @@ public class DeploymentController {
         try {
             deploymentService.deploy(buildId, configFile, configFileContent, serverList, serverApplicationList, transfertMethodList);
         } catch (DataIntegrityViolationException e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "You already deployed this on one the given server config");
+            redirectAttributes.addFlashAttribute("errorMessage", "You already deployed this on one of the given server config");
+            return "redirect:/deployments/{buildId}/deploy";
         } catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/deployments/{buildId}/deploy";
         }
-        return "redirect:/deployments/{buildId}/deploy";
+        return "redirect:/deployments";
     }
 }

@@ -47,7 +47,7 @@
                       <a th:href="@{/deployments/{id}/delete (id=${build.getId()})}" class="btn btn-danger">
                         <i class="fa-solid fa-trash-alt"></i>
                       </a>
-                      <a th:href="@{/deployments/{buildId}/deploy (buildId=${build.getId()})}" class="btn btn-success">
+                      <a class="btn btn-success" th:onclick="'showModal(\'/deployments/'+${build.getId()}+'/deploy\')'">
                         <i class="fa-solid fa-rocket"></i>
                       </a>
                     </td>
@@ -70,12 +70,38 @@
       </div>
     </div>
 
+
+    <div class="modal modal-blur fade" id="modal-danger" tabindex="-1" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-status bg-success"></div>
+          <div class="modal-body text-center py-4">
+            <i class="icon mb-2 text-success icon-lg fa-solid fa-lg fa-exclamation-circle"></i>
+            <div class="text-muted">We are checking all available servers.<br>Do not close this window, it can take a while</div>
+            <br>
+            <div class="progress">
+              <div class="progress-bar progress-bar-indeterminate bg-green"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
     <!-- Page footer -->
     <footer th:replace="~{fragments/footer}"></footer>
   </div>
 </div>
 
 <script th:replace="~{fragments/script}"></script>
+<script>
+    function showModal(href) {
+        $('#modal-danger').modal('show');
+        setTimeout(function () {
+            window.location.href = href;
+        }, 1000);
+    }
+</script>
 </body>
 
 </html>

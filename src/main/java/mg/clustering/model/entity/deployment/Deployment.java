@@ -40,7 +40,7 @@ public class Deployment {
     @JoinColumn(name = "config_file_id")
     private ConfigFile configFile;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "server_id", nullable = false)
     private Server server;
 
@@ -79,6 +79,11 @@ public class Deployment {
         } catch (IOException e) {
             throw new RuntimeException("Artifact not found, maybe the build failed");
         }
+    }
+
+    public String getLink() {
+        String artifactname = getArtifactFile().substring(getArtifactFile().lastIndexOf('/') + 1, getArtifactFile().lastIndexOf('.'));
+        return "http://" + getServer().getIpv4() + ":" + getServerApplication().getPort() + "/" + artifactname;
     }
 
     public void deploy() {

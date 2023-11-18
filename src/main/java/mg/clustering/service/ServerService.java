@@ -1,12 +1,15 @@
 package mg.clustering.service;
 
+import mg.clustering.model.entity.deployment.Deployment;
 import mg.clustering.model.entity.server.Server;
 import mg.clustering.model.entity.server.ServerApplication;
 import mg.clustering.model.entity.server.TransfertMethod;
+import mg.clustering.repository.deployment.DeploymentRepository;
 import mg.clustering.repository.server.ServerApplicationRepository;
 import mg.clustering.repository.server.ServerRepository;
 import mg.clustering.repository.server.TransfertMethodRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,12 +19,15 @@ public class ServerService {
     private final ServerApplicationRepository serverApplicationRepository;
     private final TransfertMethodRepository transfertMethodRepository;
     private final ServerRepository serverRepository;
+    private final DeploymentRepository deploymentRepository;
 
     public ServerService(ServerApplicationRepository serverApplicationRepository,
-                         TransfertMethodRepository transfertMethodRepository, ServerRepository serverRepository) {
+                         TransfertMethodRepository transfertMethodRepository, ServerRepository serverRepository,
+                         DeploymentRepository deploymentRepository) {
         this.serverApplicationRepository = serverApplicationRepository;
         this.transfertMethodRepository = transfertMethodRepository;
         this.serverRepository = serverRepository;
+        this.deploymentRepository = deploymentRepository;
     }
 
 
@@ -53,5 +59,10 @@ public class ServerService {
         serverToEdit.setIpv4(server.getIpv4());
         serverToEdit.setOperatingSystem(server.getOperatingSystem());
         serverRepository.saveAndFlush(serverToEdit);
+    }
+
+    @Transactional
+    public List<Deployment> getDeploymentList(long serverId) {
+        return deploymentRepository.findAllByServerId(serverId);
     }
 }
