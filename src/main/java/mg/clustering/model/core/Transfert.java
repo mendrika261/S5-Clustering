@@ -23,5 +23,8 @@ public abstract class Transfert {
     }
 
     public abstract void upload(String sourcePath, String destinationPath);
+
+    public abstract void download(String sourcePath, String destinationPath);
+
     public abstract void execute(String command);
 }

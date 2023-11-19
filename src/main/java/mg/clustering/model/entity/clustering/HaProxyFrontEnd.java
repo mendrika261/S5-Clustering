@@ -1,4 +1,4 @@
-package mg.clustering.model.entity.deployment;
+package mg.clustering.model.entity.clustering;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,15 +9,24 @@ import java.lang.reflect.Field;
 @Setter
 public class HaProxyFrontEnd {
     private String name;
-    private String mode;
     private String bind;
     private String default_backend;
 
+    public HaProxyFrontEnd() {
+    }
+
+    public HaProxyFrontEnd(String frontEndName, String bind, String backend) {
+        setName(frontEndName);
+        setBind(bind);
+        setDefault_backend(backend);
+    }
     @Override
     public String toString() {
         StringBuilder a = new StringBuilder("\nfrontend " + getName() + "\n");
         Field[] fields = getClass().getDeclaredFields();
         for (Field field: fields) {
+            if (field.getName().equals("name"))
+                continue;
             try {
                 if(field.get(this) != null)
                     a.append("\t").append(field.getName()).append(" ").append(field.get(this)).append("\n");

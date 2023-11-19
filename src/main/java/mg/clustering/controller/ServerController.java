@@ -2,6 +2,7 @@ package mg.clustering.controller;
 
 import mg.clustering.model.entity.deployment.Deployment;
 import mg.clustering.model.entity.server.*;
+import mg.clustering.repository.deployment.DeploymentRepository;
 import mg.clustering.repository.server.*;
 import mg.clustering.service.ServerService;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -28,18 +29,20 @@ public class ServerController {
     private final ServerService serverService;
     private final ServerApplicationRepository serverApplicationRepository;
     private final TransfertMethodRepository transfertMethodRepository;
+    private final DeploymentRepository deploymentRepository;
 
     public ServerController(OperatingSystemRepository operatingSystemRepository,
                             ServerApplicationTypeRepository serverApplicationTypeRepository,
                             ServerRepository serverRepository, ServerService serverService,
                             ServerApplicationRepository serverApplicationRepository,
-                            TransfertMethodRepository transfertMethodRepository) {
+                            TransfertMethodRepository transfertMethodRepository, DeploymentRepository deploymentRepository) {
         this.operatingSystemRepository = operatingSystemRepository;
         this.serverApplicationTypeRepository = serverApplicationTypeRepository;
         this.serverRepository = serverRepository;
         this.serverService = serverService;
         this.serverApplicationRepository = serverApplicationRepository;
         this.transfertMethodRepository = transfertMethodRepository;
+        this.deploymentRepository = deploymentRepository;
     }
 
 
@@ -230,6 +233,12 @@ public class ServerController {
     @GetMapping("/servers/{serverId}/transfert-methods/{transfertMethodId}/delete")
     public String deleteTransfertMethod(@PathVariable long serverId, @PathVariable long transfertMethodId) {
         transfertMethodRepository.deleteById(transfertMethodId);
+        return "redirect:/servers/{serverId}/manage";
+    }
+
+    @GetMapping("/servers/{serverId}/deployments/{deplId}/delete")
+    public String deleteDeployment(@PathVariable long serverId, @PathVariable long deplId) {
+        deploymentRepository.deleteById(deplId);
         return "redirect:/servers/{serverId}/manage";
     }
 }

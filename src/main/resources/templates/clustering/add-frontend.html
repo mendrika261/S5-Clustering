@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 
-<head th:replace="~{fragments/head :: head(title='Load balancing')}"></head>
+<head th:replace="~{fragments/head :: head(title='Haproxy frontend')}"></head>
 
 <body class="layout-boxed">
 
@@ -11,7 +11,7 @@
 
     <div class="page-wrapper">
         <!-- Page header -->
-        <div th:replace="~{fragments/page_header :: pageHeader(pageTitle='Mark server as load balancer')}"></div>
+        <div th:replace="~{fragments/page_header :: pageHeader(pageTitle='Add a frontend for haproxy')}"></div>
 
         <!-- Page body -->
         <div class="page-body">
@@ -20,11 +20,10 @@
 
                 <div class="row">
                     <div class="col-12">
-                        <form class="card" th:object="${haProxy}" method="post" id="form">
+                        <form class="card" method="post" id="form">
                             <div class="card-header">
-                                <a th:href="@{/servers}" class="btn btn-primary">
-                                    Show all servers
-                                    <i class="fa-solid fa-list mx-2"></i>
+                                <a th:href="@{/servers/{id}/manage (id=${server.getId()})}" class="btn btn-primary">
+                                    <i class="fa-solid fa-arrow-left mx-1"></i>
                                 </a>
                             </div>
 
@@ -33,28 +32,36 @@
                                 <p class="text-danger" th:text="${errorMessage}"></p>
 
                                 <div class="row">
-                                    <div class="mb-3">
-                                        <label class="form-label">Server</label>
-                                        <select class="form-select select2" id="os" th:field="*{server}" required>
-                                            <option th:each="server: ${serverList}" th:value="${server.getId()}" th:text="${server}"></option>
-                                        </select> <br>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Name</label>
+                                            <input type="text" class="form-control" name="frontEndName" required />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Bind</label>
+                                            <input type="text" class="form-control" placeholder="xxx.xxx.xxx.xxx:xxxx" name="bind" required />
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="mb-3">
-                                            <label class="form-label">Config file path</label>
-                                            <input type="text" class="form-control" required th:field="*{configFile}" />
+                                            <label class="form-label">Backend</label>
+                                            <select class="form-select" name="backend" required>
+                                                <option th:each="backend : ${server.getHaProxy().getHaProxyCfg().getHaProxyBackEnds()}"
+                                                        th:value="${backend.getName()}" th:text="${backend.getName()}"></option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
 
                             <div class="card-footer d-flex justify-content-end">
                                 <button type="submit" class="btn btn-success">
-                                    Mark as load balancer
+                                    Add frontend
                                     <i class="fa-solid fa-plus mx-1"></i>
                                 </button>
                             </div>
@@ -75,3 +82,8 @@
 </body>
 
 </html>
+
+
+
+
+

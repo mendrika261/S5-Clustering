@@ -35,6 +35,11 @@ public class FTPTransfert extends Transfert {
     }
 
     @Override
+    public void download(String sourcePath, String destinationPath) {
+        throw new UnsupportedOperationException("FTP does not support file download");
+    }
+
+    @Override
     public void execute(String command) {
         throw new UnsupportedOperationException("FTP does not support command execution");
     }

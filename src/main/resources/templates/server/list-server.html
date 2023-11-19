@@ -41,7 +41,10 @@
                   </thead>
                   <tbody>
                   <tr th:each="server: ${serverList}">
-                    <td th:text="${server.getName()}"></td>
+                    <td>
+                      <span th:text="${server.getName()}"></span>
+                      <i th:if="${server.isLoadBalancer()}" class="fa-solid fa-network-wired mx-1"></i>
+                    </td>
                     <td th:text="${server.getIpv4()}"></td>
                     <td>
                       <span th:text="${server.getOperatingSystem().getName()}"></span>

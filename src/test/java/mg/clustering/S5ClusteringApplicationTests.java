@@ -2,7 +2,6 @@ package mg.clustering;
 
 import lombok.SneakyThrows;
 import mg.clustering.model.entity.deployment.ConfigFile;
-import mg.clustering.model.entity.deployment.HaProxyConfigFile;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

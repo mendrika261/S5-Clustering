@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="~{fragments/head :: head(title='Haproxy backend server')}"></head>
+
+<body class="layout-boxed">
+
+<div class="page">
+    <header th:replace="~{fragments/navbar}"></header>
+    <header th:replace="~{fragments/menu}"></header>
+
+    <div class="page-wrapper">
+        <!-- Page header -->
+        <div th:replace="~{fragments/page_header :: pageHeader(pageTitle='Add a server for haproxy backend')}"></div>
+
+        <!-- Page body -->
+        <div class="page-body">
+            <div class="container-xl">
+                <!-- Content here -->
+
+                <div class="row">
+                    <div class="col-12">
+                        <form class="card" method="post" id="form">
+                            <div class="card-header">
+                                <a th:href="@{/servers/{id}/manage (id=${server.getId()})}" class="btn btn-primary">
+                                    <i class="fa-solid fa-arrow-left mx-1"></i>
+                                </a>
+                            </div>
+
+                            <div class="card-body">
+
+                                <p class="text-danger" th:text="${errorMessage}"></p>
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">Backend</label>
+                                            <select class="form-select" name="backend" required>
+                                                <option th:each="backend : ${server.getHaProxy().getHaProxyCfg().getHaProxyBackEnds()}"
+                                                        th:value="${backend.getName()}" th:text="${backend.getName()}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Serveur name</label>
+                                            <input type="text" class="form-control" placeholder="Serveur xxx" name="serverName" required />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Destination IP:port</label>
+                                            <input type="text" class="form-control" placeholder="xxx.xxx.xxx.xxx:xxxx" name="serverDestination" required />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-footer d-flex justify-content-end">
+                                <button type="submit" class="btn btn-success">
+                                    Add server
+                                    <i class="fa-solid fa-plus mx-1"></i>
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Page footer -->
+        <footer th:replace="~{fragments/footer}"></footer>
+    </div>
+</div>
+
+<script th:replace="~{fragments/script}"></script>
+</body>
+
+</html>
+
+
+
+
+

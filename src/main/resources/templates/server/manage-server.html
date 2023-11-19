@@ -84,6 +84,16 @@
                     </div>
                     <div class="col-12">
                       <div class="mb-3 mb-0">
+                        <span th:if="${server.isLoadBalancer()}">
+                          <i class="fa-solid fa-network-wired"></i>
+                          HaProxy available
+                          <a class="btn btn-ghost-dribbble btn-sm" th:href="@{/servers/{id}/haproxy/frontends/add (id=${server.getId()})}">
+                            Add a frontend</a>
+                          <a class="btn btn-ghost-facebook btn-sm" th:href="@{/servers/{serverId}/haproxy/backends/add (serverId=${server.getId()})}">
+                            Add a backend</a>
+                          <a class="btn btn-ghost-twitter btn-sm" th:href="@{/servers/{serverId}/haproxy/backends (serverId=${server.getId()})}">
+                            Manage backends</a>
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -99,6 +109,94 @@
             </div>
           </div>
         </div>
+
+
+        <div class="row mb-5" th:if="${server.isLoadBalancer()}">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="space-y-4">
+
+                  <div>
+                    <h3 class="mb-3">
+                        HaProxy config
+                        <i class="fa-solid fa-network-wired mx-2"></i>
+                    </h3>
+                    <div id="faq-4" class="accordion" role="tablist" aria-multiselectable="true">
+
+                      <div class="accordion-item" th:each="serv, stat: ${server.getHaProxy().getHaProxyCfg().getHaProxyFrontEnds()}">
+                        <div class="accordion-header" role="tab">
+                          <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#faq-4-1" aria-expanded="false">
+                            <span class="badge bg-purple mx-2">Frontend</span>
+                            <span th:text="${serv.getName()}"></span>
+                          </button>
+                        </div>
+                        <div id="faq-4-1" class="accordion-collapse collapse" role="tabpanel" data-bs-parent="#faq-4" style="">
+                          <div class="accordion-body pt-0">
+                            <ul class="list-group">
+                              <li class="list-group-item">
+                                Bind: <span th:text="${serv.getBind()}" class="fw-bolder"></span>
+                              </li>
+                              <li class="list-group-item">
+                                Backend: <span th:text="${serv.getDefault_backend()}" class="fw-bolder"></span>
+                              </li>
+                            </ul>
+                            <div class="text-end">
+                              <a class="btn btn-outline-danger mt-1"
+                                 th:href="@{/servers/{serverId}/haproxy/frontends/delete/{frontendName} (serverId=${server.getId()}, frontendName=${serv.getName()})}">
+                                Supprimer
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="accordion-item" th:each="serv, stat: ${server.getHaProxy().getHaProxyCfg().getHaProxyBackEnds()}">
+                        <div class="accordion-header" role="tab">
+                          <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#faq-5-1" aria-expanded="false">
+                            <span class="badge bg-azure mx-2">Backend</span>
+                            <span th:text="${serv.getName()}"></span>
+                          </button>
+                        </div>
+                        <div id="faq-5-1" class="accordion-collapse collapse" role="tabpanel" data-bs-parent="#faq-5" style="">
+                          <div class="accordion-body pt-0">
+                            <ul class="list-group">
+                              <li class="list-group-item">
+                                Balance type: <span th:text="${serv.getBalance()}" class="fw-bolder"></span>
+                              </li>
+                              <li class="list-group-item">
+                                Servers <br>
+                                <ul>
+                                  <li th:each="sv: ${serv.getHaProxyServers()}">
+                                    <span th:text="${sv}"></span>
+                                    <a th:href="@{/servers/{serverId}/haproxy/backends/{backendName}/delete/{serverName} (serverId=${server.getId()}, backendName=${serv.getName()}, serverName=${sv.getName()})}"
+                                       class="text-danger">
+                                      <i class="fa-solid fa-minus"></i>
+                                    </a>
+                                  </li>
+                                </ul>
+                              </li>
+                            </ul>
+                            <div class="text-end">
+                              <a class="btn btn-outline-danger mt-1"
+                                 th:href="@{/servers/{serverId}/haproxy/backends/delete/{backendName} (serverId=${server.getId()}, backendName=${serv.getName()})}">
+                                Supprimer
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
 
         <div class="row mb-5" th:unless="${deploymentList.isEmpty()}">
           <div class="col-12">
@@ -144,7 +242,7 @@
                               </li>
                             </ul>
                             <div class="text-end">
-                              <a class="btn btn-outline-danger mt-1" th:href="@{/servers/{serverId}/server-apps/{deplId}/delete (serverId=${serverId}, deplId=${depl.getId()})}">
+                              <a class="btn btn-outline-danger mt-1" th:href="@{/servers/{serverId}/deployments/{deplId}/delete (serverId=${serverId}, deplId=${depl.getId()})}">
                                 Supprimer
                               </a>
                             </div>

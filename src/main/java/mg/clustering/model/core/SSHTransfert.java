@@ -45,6 +45,25 @@ public class SSHTransfert extends Transfert {
     }
 
     @Override
+    public void download(String sourcePath, String destinationPath) {
+        try {
+            Session session = getSession();
+
+            ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
+            channelSftp.connect();
+
+            channelSftp.get(sourcePath, destinationPath);
+
+            channelSftp.disconnect();
+            session.disconnect();
+
+            session.disconnect();
+        } catch (JSchException | SftpException e) {
+            throw new RuntimeException("Error while transferring file via SSH from " + getHost() + " : " + e.getMessage());
+        }
+    }
+
+    @Override
     public void execute(String command) {
         try {
             Session session = getSession();

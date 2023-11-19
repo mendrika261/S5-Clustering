@@ -1,7 +1,8 @@
-package mg.clustering.model.entity.deployment;
+package mg.clustering.model.entity.clustering;
 
 import lombok.Getter;
 import lombok.Setter;
+import mg.clustering.model.core.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,5 +59,25 @@ public class HaProxyConfigFile {
             haProxyConfigFile.getHaProxyBackEnds().add(haProxyBackEnd);
         }
         return haProxyConfigFile;
+    }
+
+    public void save(String path) {
+        Utils.writeFile(path, toString());
+    }
+    
+    public void addFrontend(HaProxyFrontEnd haProxyFrontEnd) {
+        for (HaProxyFrontEnd haProxyFrontEnd1 : getHaProxyFrontEnds()) {
+            if(haProxyFrontEnd1.getName().equals(haProxyFrontEnd.getName()))
+                throw new RuntimeException("Frontend " + haProxyFrontEnd.getName() + " already exists");
+        }
+        haProxyFrontEnds.add(haProxyFrontEnd);
+    }
+
+    public void addBackend(HaProxyBackEnd haProxyBackEnd) {
+        for (HaProxyBackEnd haProxyBackEnd1 : getHaProxyBackEnds()) {
+            if(haProxyBackEnd1.getName().equals(haProxyBackEnd.getName()))
+                throw new RuntimeException("Backend " + haProxyBackEnd.getName() + " already exists");
+        }
+        haProxyBackEnds.add(haProxyBackEnd);
     }
 }
