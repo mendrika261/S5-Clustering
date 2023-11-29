@@ -3,10 +3,7 @@ package mg.clustering.model.entity.deployment;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import mg.clustering.model.core.BuildSystem;
-import mg.clustering.model.core.MavenBuild;
-import mg.clustering.model.core.Transfert;
-import mg.clustering.model.core.Utils;
+import mg.clustering.model.core.*;
 import mg.clustering.model.entity.server.Server;
 import org.springframework.cache.annotation.Cacheable;
 
@@ -36,6 +33,15 @@ public class Build {
     @Column(name = "artifact_type", nullable = false)
     @Enumerated(EnumType.STRING)
     private ArtifactType artifactType;
+
+    @Column(name = "web_xml_path")
+    private String webXmlPath;
+
+    @Column(name = "webapp_path")
+    private String webappPath;
+
+    @Column(name = "src_path")
+    private String srcPath;
 
     public boolean cloneGit() {
         return Utils.INSTANCE.cloneGit(getGitUrl(), Utils.REPOSITORY_PATH + getRepository()).join();
@@ -70,12 +76,40 @@ public class Build {
         BuildSystem buildSystem;
         switch (getBuildType()) {
             case BuildType.MAVEN -> buildSystem = new MavenBuild();
+            case BuildType.MANUAL -> buildSystem = new ManualBuild();
             default -> throw new RuntimeException("Build type not yet supported: " + getBuildType());
         }
-        buildSystem.build(Utils.REPOSITORY_PATH + getRepository());
+        //buildSystem.build(Utils.REPOSITORY_PATH + getRepository());
+        buildSystem.build(this);
     }
 
     public void deleteBuild() {
-        Utils.INSTANCE.deleteDirectory(Utils.REPOSITORY_PATH + getRepository());
+        Utils.deleteDirectory(Utils.REPOSITORY_PATH + getRepository());
+    }
+
+    public void setWebXmlPath(String webXmlPath) {
+        if(webXmlPath == null || webXmlPath.isEmpty())
+            throw new IllegalArgumentException("Web xml path cannot be null or empty");
+        if(!webXmlPath.endsWith("web.xml"))
+            throw new IllegalArgumentException("Web xml path must end with web.xml");
+        if(webXmlPath.startsWith("/"))
+            webXmlPath = webXmlPath.substring(1);
+        this.webXmlPath = webXmlPath;
+    }
+
+    public void setSrcPath(String srcPath) {
+        if(srcPath == null || srcPath.isEmpty())
+            throw new IllegalArgumentException("Src path cannot be null or empty");
+        if(srcPath.startsWith("/"))
+            srcPath = srcPath.substring(1);
+        this.srcPath = srcPath;
+    }
+
+    public void setWebappPath(String webappPath) {
+        if(webappPath == null || webappPath.isEmpty())
+            throw new IllegalArgumentException("Webapp path cannot be null or empty");
+        if(webappPath.startsWith("/"))
+            webappPath = webappPath.substring(1);
+        this.webappPath = webappPath;
     }
 }

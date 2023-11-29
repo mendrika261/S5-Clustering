@@ -13,7 +13,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class ClusteringController {
-
     private final ServerRepository serverRepository;
     private final HaProxyRepository haProxyRepository;
     private final ClusteringService clusteringService;

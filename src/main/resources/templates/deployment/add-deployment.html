@@ -45,7 +45,7 @@
                                     <div class="col-sm-6 col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Build System</label>
-                                            <select class="form-select select2" th:field="*{buildType}" required>
+                                            <select class="form-select select2" th:field="*{buildType}" required id="build_sys">
                                                 <option th:each="bt: ${buildTypes}" th:value="${bt}" th:text="${bt}"></option>
                                             </select> <br>
                                         </div>
@@ -56,6 +56,27 @@
                                             <select class="form-select select2" th:field="*{artifactType}" required>
                                                 <option th:each="at: ${artifactTypes}" th:value="${at}" th:text="${at}"></option>
                                             </select> <br>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="for_manual">
+                                    <div class="col-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">web.xml file</label>
+                                            <input type="text" class="form-control" required th:field="*{webXmlPath}" />
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">Source files</label>
+                                            <input type="text" class="form-control" required th:field="*{srcPath}" />
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">Webapp resource</label>
+                                            <input type="text" class="form-control" required th:field="*{webappPath}" />
                                         </div>
                                     </div>
                                 </div>
@@ -110,6 +131,19 @@
             $('#form').validate();
         }
     }
+
+    // if build system is manual, show for_manual div
+    $(document).ready(function() {
+        function showMore() {
+            if ($('#build_sys').val() === 'MANUAL') {
+                $('#for_manual').show();
+            } else {
+                $('#for_manual').hide();
+            }
+        }
+        $('#build_sys').change(showMore);
+        showMore();
+    });
 </script>
 </body>
 

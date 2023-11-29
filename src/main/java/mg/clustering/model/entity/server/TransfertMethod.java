@@ -29,6 +29,7 @@ public class TransfertMethod {
     private String username;
 
     @Column(name = "password")
+    @Lob
     private String password;
 
     @Column(name = "port", nullable = false)

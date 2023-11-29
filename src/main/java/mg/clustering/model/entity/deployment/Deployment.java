@@ -74,7 +74,15 @@ public class Deployment {
                     artifact = c.getFirst();
                     yield artifact.getName();
                 }
-                default -> throw new IllegalStateException("Unexpected value: " + getBuild().getBuildType());
+                case MANUAL -> {
+                    String s = Utils.REPOSITORY_PATH + getBuild().getRepository() + "/" + ManualBuild.ARTIFACT_PATH;
+                    List<ConfigFile> c = Utils.INSTANCE.scanConfigFilesIn(new String[]{".*\\." + getBuild().getArtifactType().getExtension()}, s, false);
+                    if(c.isEmpty())
+                        throw new RuntimeException("Build failed");
+                    artifact = c.getFirst();
+                    yield artifact.getName();
+                }
+                default -> throw new IllegalStateException("Not yet implemented build: " + getBuild().getBuildType());
             };
         } catch (IOException e) {
             throw new RuntimeException("Artifact not found, maybe the build failed");

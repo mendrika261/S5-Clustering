@@ -57,6 +57,13 @@ public class Utils {
         }
     }
 
+    public static void copyDirectory(String s, String s1) {
+        String[] command = {"cp", "-r", s, s1};
+        if (!execute(command, PWD)) {
+            throw new RuntimeException("Error while copying directory " + s + " to " + s1 + " : ");
+        }
+    }
+
     @Async
     public CompletableFuture<Boolean> ping(String ipv4) {
         String[] command = {"ping", "-c", "1", "-W", "1", ipv4};
@@ -135,7 +142,7 @@ public class Utils {
         }
     }
 
-    public void deleteDirectory(File directory) {
+    public static void deleteDirectory(File directory) {
         if (directory.isDirectory()) {
             File[] files = directory.listFiles();
 
@@ -150,7 +157,7 @@ public class Utils {
             throw new RuntimeException("Error while deleting directory " + directory.getPath());
     }
 
-    public void deleteDirectory(String directory) {
+    public static void deleteDirectory(String directory) {
         deleteDirectory(new File(directory));
     }
 }

@@ -62,9 +62,12 @@ public class DeploymentController {
         try {
             deploymentService.makeBuild(build);
         } catch (DataIntegrityViolationException e) {
+            e.printStackTrace();
             redirectAttributes.addFlashAttribute("errorMessage", "This build already exists");
+            return "redirect:/deployments/add";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/deployments/add";
         }
         return "redirect:/deployments";
     }

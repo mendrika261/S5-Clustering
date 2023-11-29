@@ -5,9 +5,7 @@ import lombok.Getter;
 @Getter
 public enum BuildType {
     MAVEN("maven"),
-    GRADLE("gradle"),
-    SCRIPT("script"),
-    COMMAND("command");
+    MANUAL("manual");
 
     final String name;
 

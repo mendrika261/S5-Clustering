@@ -9,17 +9,35 @@ import lombok.Setter;
 public class SSHTransfert extends Transfert {
     public SSHTransfert(String ipv4, String username, String password, String port) {
         super(ipv4, username, password, port);
+        //getSessionKey();
+    }
+
+    Session getSessionKey() {
+        JSch jsch = new JSch();
+        Session session = null;
+        try {
+            jsch.addIdentity(getPassword());
+            session = jsch.getSession(getUsername(), getHost(), 22);
+            session.setConfig("StrictHostKeyChecking", "no");
+            session.connect();
+        } catch (JSchException e) {
+            //e.printStackTrace();
+            throw new RuntimeException("Error while connecting to SSH server " + getUsername() + "@" + getHost() + ":" + getPort());
+        }
+        return session;
     }
 
     Session getSession() {
         JSch jsch = new JSch();
         Session session = null;
         try {
+            // jsch.addIdentity("/Users/mendrika/.ssh/id_rsa");
             session = jsch.getSession(getUsername(), getHost(), 22);
             session.setPassword(getPassword());
             session.setConfig("StrictHostKeyChecking", "no");
             session.connect();
         } catch (JSchException e) {
+            //e.printStackTrace();
             throw new RuntimeException("Error while connecting to SSH server " + getUsername() + "@" + getHost() + ":" + getPort());
         }
         return session;
